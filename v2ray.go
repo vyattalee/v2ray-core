@@ -198,6 +198,7 @@ func initInstanceWithConfig(config *Config, server *Instance) (bool, error) {
 			return true, err
 		}
 		if feature, ok := obj.(features.Feature); ok {
+			newError("v2ray add feature:", feature.Type(), feature).WriteToLog()
 			if err := server.AddFeature(feature); err != nil {
 				return true, err
 			}
@@ -216,6 +217,7 @@ func initInstanceWithConfig(config *Config, server *Instance) (bool, error) {
 
 	for _, f := range essentialFeatures {
 		if server.GetFeature(f.Type) == nil {
+			newError("v2ray add essentialFeatures:", f.Type, f).WriteToLog()
 			if err := server.AddFeature(f.Instance); err != nil {
 				return true, err
 			}
