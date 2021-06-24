@@ -23,7 +23,8 @@ func init() {
 					newError("Reading config: ", arg).AtInfo().WriteToLog()
 					r, err := confloader.LoadConfig(arg)
 					common.Must(err)
-					c, err := serial.DecodeYAMLConfig(r)
+					c, err := serial.DecodeJSONConfig(r)
+					//c, err := serial.DecodeYAMLConfig(r)
 					common.Must(err)
 					if i == 0 {
 						// This ensure even if the muti-yaml parser do not support a setting,
@@ -35,7 +36,8 @@ func init() {
 				}
 				return cf.Build()
 			case io.Reader:
-				return serial.LoadYAMLConfig(v)
+				return serial.LoadJSONConfig(v)
+				//return serial.LoadYAMLConfig(v)
 			default:
 				return nil, newError("unknow type")
 			}
