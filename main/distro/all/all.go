@@ -77,6 +77,9 @@ import (
 	// The following line loads JSON internally
 	_ "github.com/v2fly/v2ray-core/v4/main/jsonem"
 
+	// YAML config support.
+	_ "github.com/v2fly/v2ray-core/v4/main/yaml"
+
 	// Load config from file or http(s)
 	_ "github.com/v2fly/v2ray-core/v4/main/confloader/external"
 )
