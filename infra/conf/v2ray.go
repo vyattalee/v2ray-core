@@ -59,9 +59,9 @@ func toProtocolList(s []string) ([]proxyman.KnownProtocols, error) {
 }
 
 type SniffingConfig struct {
-	Enabled      bool                  `json:"enabled"`
-	DestOverride *cfgcommon.StringList `json:"destOverride"`
-	MetadataOnly bool                  `json:"metadataOnly"`
+	Enabled      bool                  `json:"enabled" yaml:"enabled"`
+	DestOverride *cfgcommon.StringList `json:"destOverride" yaml:"destOverride"`
+	MetadataOnly bool                  `json:"metadataOnly" yaml:"metadataOnly"`
 }
 
 // Build implements Buildable.
@@ -92,8 +92,8 @@ func (c *SniffingConfig) Build() (*proxyman.SniffingConfig, error) {
 }
 
 type MuxConfig struct {
-	Enabled     bool  `json:"enabled"`
-	Concurrency int16 `json:"concurrency"`
+	Enabled     bool  `json:"enabled" yaml:"enabled"`
+	Concurrency int16 `json:"concurrency" yaml:"concurrency"`
 }
 
 // Build creates MultiplexingConfig, Concurrency < 0 completely disables mux.
@@ -114,9 +114,9 @@ func (m *MuxConfig) Build() *proxyman.MultiplexingConfig {
 }
 
 type InboundDetourAllocationConfig struct {
-	Strategy    string  `json:"strategy"`
-	Concurrency *uint32 `json:"concurrency"`
-	RefreshMin  *uint32 `json:"refresh"`
+	Strategy    string  `json:"strategy" yaml:"strategy"`
+	Concurrency *uint32 `json:"concurrency" yaml:"concurrency"`
+	RefreshMin  *uint32 `json:"refresh" yaml:"refresh"`
 }
 
 // Build implements Buildable.
@@ -148,15 +148,15 @@ func (c *InboundDetourAllocationConfig) Build() (*proxyman.AllocationStrategy, e
 }
 
 type InboundDetourConfig struct {
-	Protocol       string                         `json:"protocol"`
-	PortRange      *cfgcommon.PortRange           `json:"port"`
-	ListenOn       *cfgcommon.Address             `json:"listen"`
-	Settings       *json.RawMessage               `json:"settings"`
-	Tag            string                         `json:"tag"`
-	Allocation     *InboundDetourAllocationConfig `json:"allocate"`
-	StreamSetting  *StreamConfig                  `json:"streamSettings"`
-	DomainOverride *cfgcommon.StringList          `json:"domainOverride"`
-	SniffingConfig *SniffingConfig                `json:"sniffing"`
+	Protocol       string                         `json:"protocol" yaml:"protocol"`
+	PortRange      *cfgcommon.PortRange           `json:"port" yaml:"port"`
+	ListenOn       *cfgcommon.Address             `json:"listen" yaml:"listen"`
+	Settings       *json.RawMessage               `json:"settings" yaml:"settings"`
+	Tag            string                         `json:"tag" yaml:"tag"`
+	Allocation     *InboundDetourAllocationConfig `json:"allocate" yaml:"allocate"`
+	StreamSetting  *StreamConfig                  `json:"streamSettings" yaml:"streamSettings"`
+	DomainOverride *cfgcommon.StringList          `json:"domainOverride" yaml:"domainOverride"`
+	SniffingConfig *SniffingConfig                `json:"sniffing" yaml:"sniffing"`
 }
 
 // Build implements Buildable.
@@ -254,13 +254,13 @@ func (c *InboundDetourConfig) Build() (*core.InboundHandlerConfig, error) {
 }
 
 type OutboundDetourConfig struct {
-	Protocol      string             `json:"protocol"`
-	SendThrough   *cfgcommon.Address `json:"sendThrough"`
-	Tag           string             `json:"tag"`
-	Settings      *json.RawMessage   `json:"settings"`
-	StreamSetting *StreamConfig      `json:"streamSettings"`
-	ProxySettings *ProxyConfig       `json:"proxySettings"`
-	MuxSettings   *MuxConfig         `json:"mux"`
+	Protocol      string             `json:"protocol" yaml:"protocol"`
+	SendThrough   *cfgcommon.Address `json:"sendThrough" yaml:"sendThrough"`
+	Tag           string             `json:"tag" yaml:"tag"`
+	Settings      *json.RawMessage   `json:"settings" yaml:"settings"`
+	StreamSetting *StreamConfig      `json:"streamSettings" yaml:"streamSettings"`
+	ProxySettings *ProxyConfig       `json:"proxySettings" yaml:"proxySettings"`
+	MuxSettings   *MuxConfig         `json:"mux" yaml:"mux"`
 }
 
 // Build implements Buildable.
@@ -326,39 +326,39 @@ type Config struct {
 	// Port of this Point server.
 	// Deprecated: Port exists for historical compatibility
 	// and should not be used.
-	Port uint16 `json:"port"`
+	Port uint16 `json:"port" yaml:"port"`
 
 	// Deprecated: InboundConfig exists for historical compatibility
 	// and should not be used.
-	InboundConfig *InboundDetourConfig `json:"inbound"`
+	InboundConfig *InboundDetourConfig `json:"inbound" yaml:"inbound"`
 
 	// Deprecated: OutboundConfig exists for historical compatibility
 	// and should not be used.
-	OutboundConfig *OutboundDetourConfig `json:"outbound"`
+	OutboundConfig *OutboundDetourConfig `json:"outbound" yaml:"outbound"`
 
 	// Deprecated: InboundDetours exists for historical compatibility
 	// and should not be used.
-	InboundDetours []InboundDetourConfig `json:"inboundDetour"`
+	InboundDetours []InboundDetourConfig `json:"inboundDetour" yaml:"inboundDetour"`
 
 	// Deprecated: OutboundDetours exists for historical compatibility
 	// and should not be used.
-	OutboundDetours []OutboundDetourConfig `json:"outboundDetour"`
+	OutboundDetours []OutboundDetourConfig `json:"outboundDetour" yaml:"outboundDetour"`
 
-	LogConfig        *LogConfig              `json:"log"`
-	RouterConfig     *RouterConfig           `json:"routing"`
-	DNSConfig        *DNSConfig              `json:"dns"`
-	InboundConfigs   []InboundDetourConfig   `json:"inbounds"`
-	OutboundConfigs  []OutboundDetourConfig  `json:"outbounds"`
-	Transport        *TransportConfig        `json:"transport"`
-	Policy           *PolicyConfig           `json:"policy"`
-	API              *APIConfig              `json:"api"`
-	Stats            *StatsConfig            `json:"stats"`
-	Reverse          *ReverseConfig          `json:"reverse"`
-	FakeDNS          *FakeDNSConfig          `json:"fakeDns"`
-	BrowserForwarder *BrowserForwarderConfig `json:"browserForwarder"`
-	Observatory      *ObservatoryConfig      `json:"observatory"`
+	LogConfig        *LogConfig              `json:"log" yaml:"log"`
+	RouterConfig     *RouterConfig           `json:"routing" yaml:"routing"`
+	DNSConfig        *DNSConfig              `json:"dns" yaml:"dns"`
+	InboundConfigs   []InboundDetourConfig   `json:"inbounds" yaml:"inbounds"`
+	OutboundConfigs  []OutboundDetourConfig  `json:"outbounds" yaml:"outbounds"`
+	Transport        *TransportConfig        `json:"transport" yaml:"transport"`
+	Policy           *PolicyConfig           `json:"policy" yaml:"policy"`
+	API              *APIConfig              `json:"api" yaml:"api"`
+	Stats            *StatsConfig            `json:"stats" yaml:"stats"`
+	Reverse          *ReverseConfig          `json:"reverse" yaml:"reverse"`
+	FakeDNS          *FakeDNSConfig          `json:"fakeDns" yaml:"fakeDns"`
+	BrowserForwarder *BrowserForwarderConfig `json:"browserForwarder" yaml:"browserForwarder"`
+	Observatory      *ObservatoryConfig      `json:"observatory" yaml:"observatory"`
 
-	Services map[string]*json.RawMessage `json:"services"`
+	Services map[string]*json.RawMessage `json:"services" yaml:"services"`
 }
 
 func (c *Config) findInboundTag(tag string) int {
