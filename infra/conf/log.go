@@ -16,9 +16,9 @@ func DefaultLogConfig() *log.Config {
 }
 
 type LogConfig struct {
-	AccessLog string `json:"access"`
-	ErrorLog  string `json:"error"`
-	LogLevel  string `json:"loglevel"`
+	AccessLog string `json:"access" yaml:"access"`
+	ErrorLog  string `json:"error" yaml:"error"`
+	LogLevel  string `json:"loglevel" yaml:"loglevel"`
 }
 
 func (v *LogConfig) Build() *log.Config {

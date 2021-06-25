@@ -93,7 +93,7 @@ func DecodeYAMLConfig(reader io.Reader) (*conf.Config, error) {
 		Reader: reader,
 	}, yamlContent)
 	decoder := yaml.NewDecoder(yamlReader)
-	decoder.SetStrict(true)
+	//decoder.SetStrict(true)
 
 	if err := decoder.Decode(yamlConfig); err != nil {
 		var pos *offset

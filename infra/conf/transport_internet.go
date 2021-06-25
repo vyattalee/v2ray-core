@@ -39,15 +39,15 @@ var (
 )
 
 type KCPConfig struct {
-	Mtu             *uint32         `json:"mtu"`
-	Tti             *uint32         `json:"tti"`
-	UpCap           *uint32         `json:"uplinkCapacity"`
-	DownCap         *uint32         `json:"downlinkCapacity"`
-	Congestion      *bool           `json:"congestion"`
-	ReadBufferSize  *uint32         `json:"readBufferSize"`
-	WriteBufferSize *uint32         `json:"writeBufferSize"`
-	HeaderConfig    json.RawMessage `json:"header"`
-	Seed            *string         `json:"seed"`
+	Mtu             *uint32         `json:"mtu" yaml:"mtu"`
+	Tti             *uint32         `json:"tti" yaml:"tti"`
+	UpCap           *uint32         `json:"uplinkCapacity" yaml:"uplinkCapacity"`
+	DownCap         *uint32         `json:"downlinkCapacity" yaml:"downlinkCapacity"`
+	Congestion      *bool           `json:"congestion" yaml:"congestion"`
+	ReadBufferSize  *uint32         `json:"readBufferSize" yaml:"readBufferSize"`
+	WriteBufferSize *uint32         `json:"writeBufferSize" yaml:"writeBufferSize"`
+	HeaderConfig    json.RawMessage `json:"header" yaml:"header"`
+	Seed            *string         `json:"seed" yaml:"seed"`
 }
 
 // Build implements Buildable.
@@ -113,8 +113,8 @@ func (c *KCPConfig) Build() (proto.Message, error) {
 }
 
 type TCPConfig struct {
-	HeaderConfig        json.RawMessage `json:"header"`
-	AcceptProxyProtocol bool            `json:"acceptProxyProtocol"`
+	HeaderConfig        json.RawMessage `json:"header" yaml:"header"`
+	AcceptProxyProtocol bool            `json:"acceptProxyProtocol" yaml:"acceptProxyProtocol"`
 }
 
 // Build implements Buildable.
@@ -138,13 +138,13 @@ func (c *TCPConfig) Build() (proto.Message, error) {
 }
 
 type WebSocketConfig struct {
-	Path                 string            `json:"path"`
-	Path2                string            `json:"Path"` // The key was misspelled. For backward compatibility, we have to keep track the old key.
-	Headers              map[string]string `json:"headers"`
-	AcceptProxyProtocol  bool              `json:"acceptProxyProtocol"`
-	MaxEarlyData         int32             `json:"maxEarlyData"`
-	UseBrowserForwarding bool              `json:"useBrowserForwarding"`
-	EarlyDataHeaderName  string            `json:"earlyDataHeaderName"`
+	Path                 string            `json:"path" yaml:"path"`
+	Path2                string            `json:"Path" yaml:"Path"` // The key was misspelled. For backward compatibility, we have to keep track the old key.
+	Headers              map[string]string `json:"headers" yaml:"headers"`
+	AcceptProxyProtocol  bool              `json:"acceptProxyProtocol" yaml:"acceptProxyProtocol"`
+	MaxEarlyData         int32             `json:"maxEarlyData" yaml:"maxEarlyData"`
+	UseBrowserForwarding bool              `json:"useBrowserForwarding" yaml:"useBrowserForwarding"`
+	EarlyDataHeaderName  string            `json:"earlyDataHeaderName" yaml:"earlyDataHeaderName"`
 }
 
 // Build implements Buildable.
@@ -174,10 +174,10 @@ func (c *WebSocketConfig) Build() (proto.Message, error) {
 }
 
 type HTTPConfig struct {
-	Host    *cfgcommon.StringList            `json:"host"`
-	Path    string                           `json:"path"`
-	Method  string                           `json:"method"`
-	Headers map[string]*cfgcommon.StringList `json:"headers"`
+	Host    *cfgcommon.StringList            `json:"host" yaml:"host"`
+	Path    string                           `json:"path" yaml:"path"`
+	Method  string                           `json:"method" yaml:"method"`
+	Headers map[string]*cfgcommon.StringList `json:"headers" yaml:"headers"`
 }
 
 // Build implements Buildable.
@@ -209,9 +209,9 @@ func (c *HTTPConfig) Build() (proto.Message, error) {
 }
 
 type QUICConfig struct {
-	Header   json.RawMessage `json:"header"`
-	Security string          `json:"security"`
-	Key      string          `json:"key"`
+	Header   json.RawMessage `json:"header" yaml:"header"`
+	Security string          `json:"security" yaml:"security"`
+	Key      string          `json:"key" yaml:"key"`
 }
 
 // Build implements Buildable.
@@ -250,9 +250,9 @@ func (c *QUICConfig) Build() (proto.Message, error) {
 }
 
 type DomainSocketConfig struct {
-	Path     string `json:"path"`
-	Abstract bool   `json:"abstract"`
-	Padding  bool   `json:"padding"`
+	Path     string `json:"path" yaml:"path"`
+	Abstract bool   `json:"abstract" yaml:"abstract"`
+	Padding  bool   `json:"padding" yaml:"padding"`
 }
 
 // Build implements Buildable.
@@ -275,11 +275,11 @@ func readFileOrString(f string, s []string) ([]byte, error) {
 }
 
 type TLSCertConfig struct {
-	CertFile string   `json:"certificateFile"`
-	CertStr  []string `json:"certificate"`
-	KeyFile  string   `json:"keyFile"`
-	KeyStr   []string `json:"key"`
-	Usage    string   `json:"usage"`
+	CertFile string   `json:"certificateFile" yaml:"certificateFile"`
+	CertStr  []string `json:"certificate" yaml:"certificate"`
+	KeyFile  string   `json:"keyFile" yaml:"keyFile"`
+	KeyStr   []string `json:"key" yaml:"key"`
+	Usage    string   `json:"usage" yaml:"usage"`
 }
 
 // Build implements Buildable.
@@ -315,13 +315,13 @@ func (c *TLSCertConfig) Build() (*tls.Certificate, error) {
 }
 
 type TLSConfig struct {
-	Insecure                         bool                  `json:"allowInsecure"`
-	Certs                            []*TLSCertConfig      `json:"certificates"`
-	ServerName                       string                `json:"serverName"`
-	ALPN                             *cfgcommon.StringList `json:"alpn"`
-	EnableSessionResumption          bool                  `json:"enableSessionResumption"`
-	DisableSystemRoot                bool                  `json:"disableSystemRoot"`
-	PinnedPeerCertificateChainSha256 *[]string             `json:"pinnedPeerCertificateChainSha256"`
+	Insecure                         bool                  `json:"allowInsecure" yaml:"allowInsecure"`
+	Certs                            []*TLSCertConfig      `json:"certificates" yaml:"certificates"`
+	ServerName                       string                `json:"serverName" yaml:"serverName"`
+	ALPN                             *cfgcommon.StringList `json:"alpn" yaml:"alpn"`
+	EnableSessionResumption          bool                  `json:"enableSessionResumption" yaml:"enableSessionResumption"`
+	DisableSystemRoot                bool                  `json:"disableSystemRoot" yaml:"disableSystemRoot"`
+	PinnedPeerCertificateChainSha256 *[]string             `json:"pinnedPeerCertificateChainSha256" yaml:"pinnedPeerCertificateChainSha256"`
 }
 
 // Build implements Buildable.
@@ -385,12 +385,12 @@ func (p TransportProtocol) Build() (string, error) {
 }
 
 type SocketConfig struct {
-	Mark                int32  `json:"mark"`
-	TFO                 *bool  `json:"tcpFastOpen"`
-	TProxy              string `json:"tproxy"`
-	AcceptProxyProtocol bool   `json:"acceptProxyProtocol"`
+	Mark                int32  `json:"mark" yaml:"mark"`
+	TFO                 *bool  `json:"tcpFastOpen" yaml:"tcpFastOpen"`
+	TProxy              string `json:"tproxy" yaml:"tproxy"`
+	AcceptProxyProtocol bool   `json:"acceptProxyProtocol" yaml:"acceptProxyProtocol"`
 
-	TCPKeepAliveInterval int32 `json:"tcpKeepAliveInterval"`
+	TCPKeepAliveInterval int32 `json:"tcpKeepAliveInterval" yaml:"tcpKeepAliveInterval"`
 }
 
 // Build implements Buildable.
@@ -423,18 +423,18 @@ func (c *SocketConfig) Build() (*internet.SocketConfig, error) {
 }
 
 type StreamConfig struct {
-	Network        *TransportProtocol  `json:"network"`
-	Security       string              `json:"security"`
-	TLSSettings    *TLSConfig          `json:"tlsSettings"`
-	TCPSettings    *TCPConfig          `json:"tcpSettings"`
-	KCPSettings    *KCPConfig          `json:"kcpSettings"`
-	WSSettings     *WebSocketConfig    `json:"wsSettings"`
-	HTTPSettings   *HTTPConfig         `json:"httpSettings"`
-	DSSettings     *DomainSocketConfig `json:"dsSettings"`
-	QUICSettings   *QUICConfig         `json:"quicSettings"`
-	GunSettings    *GunConfig          `json:"gunSettings"`
-	GRPCSettings   *GunConfig          `json:"grpcSettings"`
-	SocketSettings *SocketConfig       `json:"sockopt"`
+	Network        *TransportProtocol  `json:"network" yaml:"network"`
+	Security       string              `json:"security" yaml:"security"`
+	TLSSettings    *TLSConfig          `json:"tlsSettings" yaml:"tlsSettings"`
+	TCPSettings    *TCPConfig          `json:"tcpSettings" yaml:"tcpSettings"`
+	KCPSettings    *KCPConfig          `json:"kcpSettings" yaml:"kcpSettings"`
+	WSSettings     *WebSocketConfig    `json:"wsSettings" yaml:"wsSettings"`
+	HTTPSettings   *HTTPConfig         `json:"httpSettings" yaml:"httpSettings"`
+	DSSettings     *DomainSocketConfig `json:"dsSettings" yaml:"dsSettings"`
+	QUICSettings   *QUICConfig         `json:"quicSettings" yaml:"quicSettings"`
+	GunSettings    *GunConfig          `json:"gunSettings" yaml:"gunSettings"`
+	GRPCSettings   *GunConfig          `json:"grpcSettings" yaml:"grpcSettings"`
+	SocketSettings *SocketConfig       `json:"sockopt" yaml:"sockopt"`
 }
 
 // Build implements Buildable.
@@ -546,8 +546,8 @@ func (c *StreamConfig) Build() (*internet.StreamConfig, error) {
 }
 
 type ProxyConfig struct {
-	Tag                 string `json:"tag"`
-	TransportLayerProxy bool   `json:"transportLayer"`
+	Tag                 string `json:"tag" yaml:"tag"`
+	TransportLayerProxy bool   `json:"transportLayer" yaml:"transportLayer"`
 }
 
 // Build implements Buildable.

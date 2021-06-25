@@ -481,44 +481,44 @@ type RoutingRule struct {
 	//	*RoutingRule_BalancingTag
 	TargetTag isRoutingRule_TargetTag `protobuf_oneof:"target_tag"`
 	// List of domains for target domain matching.
-	Domain []*Domain `protobuf:"bytes,2,rep,name=domain,proto3" json:"domain,omitempty"`
+	Domain []*Domain `protobuf:"bytes,2,rep,name=domain,proto3" json:"domain,omitempty" yaml:"domain"`
 	// List of CIDRs for target IP address matching.
 	// Deprecated. Use geoip below.
 	//
 	// Deprecated: Do not use.
-	Cidr []*CIDR `protobuf:"bytes,3,rep,name=cidr,proto3" json:"cidr,omitempty"`
+	Cidr []*CIDR `protobuf:"bytes,3,rep,name=cidr,proto3" json:"cidr,omitempty" yaml:"cidr"`
 	// List of GeoIPs for target IP address matching. If this entry exists, the
 	// cidr above will have no effect. GeoIP fields with the same country code are
 	// supposed to contain exactly same content. They will be merged during
 	// runtime. For customized GeoIPs, please leave country code empty.
-	Geoip []*GeoIP `protobuf:"bytes,10,rep,name=geoip,proto3" json:"geoip,omitempty"`
+	Geoip []*GeoIP `protobuf:"bytes,10,rep,name=geoip,proto3" json:"geoip,omitempty" yaml:"geoip"`
 	// A range of port [from, to]. If the destination port is in this range, this
 	// rule takes effect. Deprecated. Use port_list.
 	//
 	// Deprecated: Do not use.
-	PortRange *net.PortRange `protobuf:"bytes,4,opt,name=port_range,json=portRange,proto3" json:"port_range,omitempty"`
+	PortRange *net.PortRange `protobuf:"bytes,4,opt,name=port_range,json=portRange,proto3" json:"port_range,omitempty" yaml:"port_range"`
 	// List of ports.
-	PortList *net.PortList `protobuf:"bytes,14,opt,name=port_list,json=portList,proto3" json:"port_list,omitempty"`
+	PortList *net.PortList `protobuf:"bytes,14,opt,name=port_list,json=portList,proto3" json:"port_list,omitempty" yaml:"port_list"`
 	// List of networks. Deprecated. Use networks.
 	//
 	// Deprecated: Do not use.
-	NetworkList *net.NetworkList `protobuf:"bytes,5,opt,name=network_list,json=networkList,proto3" json:"network_list,omitempty"`
+	NetworkList *net.NetworkList `protobuf:"bytes,5,opt,name=network_list,json=networkList,proto3" json:"network_list,omitempty" yaml:"network_list"`
 	// List of networks for matching.
-	Networks []net.Network `protobuf:"varint,13,rep,packed,name=networks,proto3,enum=v2ray.core.common.net.Network" json:"networks,omitempty"`
+	Networks []net.Network `protobuf:"varint,13,rep,packed,name=networks,proto3,enum=v2ray.core.common.net.Network" json:"networks,omitempty" yaml:"networks"`
 	// List of CIDRs for source IP address matching.
 	//
 	// Deprecated: Do not use.
-	SourceCidr []*CIDR `protobuf:"bytes,6,rep,name=source_cidr,json=sourceCidr,proto3" json:"source_cidr,omitempty"`
+	SourceCidr []*CIDR `protobuf:"bytes,6,rep,name=source_cidr,json=sourceCidr,proto3" json:"source_cidr,omitempty" yaml:"source_cidr"`
 	// List of GeoIPs for source IP address matching. If this entry exists, the
 	// source_cidr above will have no effect.
-	SourceGeoip []*GeoIP `protobuf:"bytes,11,rep,name=source_geoip,json=sourceGeoip,proto3" json:"source_geoip,omitempty"`
+	SourceGeoip []*GeoIP `protobuf:"bytes,11,rep,name=source_geoip,json=sourceGeoip,proto3" json:"source_geoip,omitempty" yaml:"source_geoip"`
 	// List of ports for source port matching.
-	SourcePortList *net.PortList `protobuf:"bytes,16,opt,name=source_port_list,json=sourcePortList,proto3" json:"source_port_list,omitempty"`
-	UserEmail      []string      `protobuf:"bytes,7,rep,name=user_email,json=userEmail,proto3" json:"user_email,omitempty"`
-	InboundTag     []string      `protobuf:"bytes,8,rep,name=inbound_tag,json=inboundTag,proto3" json:"inbound_tag,omitempty"`
-	Protocol       []string      `protobuf:"bytes,9,rep,name=protocol,proto3" json:"protocol,omitempty"`
-	Attributes     string        `protobuf:"bytes,15,opt,name=attributes,proto3" json:"attributes,omitempty"`
-	DomainMatcher  string        `protobuf:"bytes,17,opt,name=domain_matcher,json=domainMatcher,proto3" json:"domain_matcher,omitempty"`
+	SourcePortList *net.PortList `protobuf:"bytes,16,opt,name=source_port_list,json=sourcePortList,proto3" json:"source_port_list,omitempty" yaml:"source_port_list"`
+	UserEmail      []string      `protobuf:"bytes,7,rep,name=user_email,json=userEmail,proto3" json:"user_email,omitempty" yaml:"user_email"`
+	InboundTag     []string      `protobuf:"bytes,8,rep,name=inbound_tag,json=inboundTag,proto3" json:"inbound_tag,omitempty" yaml:"inbound_tag"`
+	Protocol       []string      `protobuf:"bytes,9,rep,name=protocol,proto3" json:"protocol,omitempty" yaml:"protocol"`
+	Attributes     string        `protobuf:"bytes,15,opt,name=attributes,proto3" json:"attributes,omitempty" yaml:"attributes"`
+	DomainMatcher  string        `protobuf:"bytes,17,opt,name=domain_matcher,json=domainMatcher,proto3" json:"domain_matcher,omitempty" yaml:"domain_matcher"`
 }
 
 func (x *RoutingRule) Reset() {
@@ -689,12 +689,12 @@ type isRoutingRule_TargetTag interface {
 
 type RoutingRule_Tag struct {
 	// Tag of outbound that this rule is pointing to.
-	Tag string `protobuf:"bytes,1,opt,name=tag,proto3,oneof"`
+	Tag string `protobuf:"bytes,1,opt,name=tag,proto3,oneof" yaml:"tag"`
 }
 
 type RoutingRule_BalancingTag struct {
 	// Tag of routing balancer.
-	BalancingTag string `protobuf:"bytes,12,opt,name=balancing_tag,json=balancingTag,proto3,oneof"`
+	BalancingTag string `protobuf:"bytes,12,opt,name=balancing_tag,json=balancingTag,proto3,oneof" yaml:"balancingTag"`
 }
 
 func (*RoutingRule_Tag) isRoutingRule_TargetTag() {}
@@ -706,9 +706,9 @@ type BalancingRule struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Tag              string   `protobuf:"bytes,1,opt,name=tag,proto3" json:"tag,omitempty"`
-	OutboundSelector []string `protobuf:"bytes,2,rep,name=outbound_selector,json=outboundSelector,proto3" json:"outbound_selector,omitempty"`
-	Strategy         string   `protobuf:"bytes,3,opt,name=strategy,proto3" json:"strategy,omitempty"`
+	Tag              string   `protobuf:"bytes,1,opt,name=tag,proto3" json:"tag,omitempty" yaml:"tag"`
+	OutboundSelector []string `protobuf:"bytes,2,rep,name=outbound_selector,json=outboundSelector,proto3" json:"outbound_selector,omitempty" yaml:"outbound_selector"`
+	Strategy         string   `protobuf:"bytes,3,opt,name=strategy,proto3" json:"strategy,omitempty" yaml:"strategy"`
 }
 
 func (x *BalancingRule) Reset() {
@@ -769,9 +769,9 @@ type Config struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	DomainStrategy Config_DomainStrategy `protobuf:"varint,1,opt,name=domain_strategy,json=domainStrategy,proto3,enum=v2ray.core.app.router.Config_DomainStrategy" json:"domain_strategy,omitempty"`
-	Rule           []*RoutingRule        `protobuf:"bytes,2,rep,name=rule,proto3" json:"rule,omitempty"`
-	BalancingRule  []*BalancingRule      `protobuf:"bytes,3,rep,name=balancing_rule,json=balancingRule,proto3" json:"balancing_rule,omitempty"`
+	DomainStrategy Config_DomainStrategy `protobuf:"varint,1,opt,name=domain_strategy,json=domainStrategy,proto3,enum=v2ray.core.app.router.Config_DomainStrategy" json:"domain_strategy,omitempty" yaml:"domain_strategy"`
+	Rule           []*RoutingRule        `protobuf:"bytes,2,rep,name=rule,proto3" json:"rule,omitempty" yaml:"rule"`
+	BalancingRule  []*BalancingRule      `protobuf:"bytes,3,rep,name=balancing_rule,json=balancingRule,proto3" json:"balancing_rule,omitempty" yaml:"balancing_rule"`
 }
 
 func (x *Config) Reset() {
@@ -832,11 +832,11 @@ type Domain_Attribute struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Key string `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
+	Key string `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty" yaml:"key"`
 	// Types that are assignable to TypedValue:
 	//	*Domain_Attribute_BoolValue
 	//	*Domain_Attribute_IntValue
-	TypedValue isDomain_Attribute_TypedValue `protobuf_oneof:"typed_value"`
+	TypedValue isDomain_Attribute_TypedValue `protobuf_oneof:"typed_value" yaml:"typed_value"`
 }
 
 func (x *Domain_Attribute) Reset() {
@@ -904,11 +904,11 @@ type isDomain_Attribute_TypedValue interface {
 }
 
 type Domain_Attribute_BoolValue struct {
-	BoolValue bool `protobuf:"varint,2,opt,name=bool_value,json=boolValue,proto3,oneof"`
+	BoolValue bool `protobuf:"varint,2,opt,name=bool_value,json=boolValue,proto3,oneof" yaml:"boolValue"`
 }
 
 type Domain_Attribute_IntValue struct {
-	IntValue int64 `protobuf:"varint,3,opt,name=int_value,json=intValue,proto3,oneof"`
+	IntValue int64 `protobuf:"varint,3,opt,name=int_value,json=intValue,proto3,oneof" yaml:"intValue"`
 }
 
 func (*Domain_Attribute_BoolValue) isDomain_Attribute_TypedValue() {}

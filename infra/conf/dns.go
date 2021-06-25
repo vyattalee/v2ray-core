@@ -34,12 +34,12 @@ func (c *NameServerConfig) UnmarshalJSON(data []byte) error {
 	}
 
 	var advanced struct {
-		Address      *cfgcommon.Address   `json:"address"`
-		ClientIP     *cfgcommon.Address   `json:"clientIp"`
-		Port         uint16               `json:"port"`
-		SkipFallback bool                 `json:"skipFallback"`
-		Domains      []string             `json:"domains"`
-		ExpectIPs    cfgcommon.StringList `json:"expectIps"`
+		Address      *cfgcommon.Address   `json:"address" yaml:"address"`
+		ClientIP     *cfgcommon.Address   `json:"clientIp" yaml:"clientIp"`
+		Port         uint16               `json:"port" yaml:"port"`
+		SkipFallback bool                 `json:"skipFallback" yaml:"skipFallback"`
+		Domains      []string             `json:"domains" yaml:"domains"`
+		ExpectIPs    cfgcommon.StringList `json:"expectIps" yaml:"expectIps"`
 	}
 	if err := json.Unmarshal(data, &advanced); err == nil {
 		c.Address = advanced.Address
@@ -133,13 +133,13 @@ var typeMap = map[router.Domain_Type]dns.DomainMatchingType{
 
 // DNSConfig is a JSON serializable object for dns.Config.
 type DNSConfig struct {
-	Servers         []*NameServerConfig     `json:"servers"`
-	Hosts           map[string]*HostAddress `json:"hosts"`
-	ClientIP        *cfgcommon.Address      `json:"clientIp"`
-	Tag             string                  `json:"tag"`
-	QueryStrategy   string                  `json:"queryStrategy"`
-	DisableCache    bool                    `json:"disableCache"`
-	DisableFallback bool                    `json:"disableFallback"`
+	Servers         []*NameServerConfig     `json:"servers" yaml:"servers"`
+	Hosts           map[string]*HostAddress `json:"hosts" yaml:"hosts"`
+	ClientIP        *cfgcommon.Address      `json:"clientIp" yaml:"clientIp"`
+	Tag             string                  `json:"tag" yaml:"tag"`
+	QueryStrategy   string                  `json:"queryStrategy" yaml:"queryStrategy"`
+	DisableCache    bool                    `json:"disableCache" yaml:"disableCache"`
+	DisableFallback bool                    `json:"disableFallback" yaml:"disableFallback"`
 }
 
 type HostAddress struct {

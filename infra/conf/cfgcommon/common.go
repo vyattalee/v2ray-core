@@ -2,6 +2,7 @@ package cfgcommon
 
 import (
 	"encoding/json"
+	"gopkg.in/yaml.v2"
 	"os"
 	"strings"
 
@@ -115,6 +116,15 @@ func parseIntPort(data []byte) (net.Port, error) {
 	return net.PortFromInt(intPort)
 }
 
+func parseYAMLIntPort(data []byte) (net.Port, error) {
+	var intPort uint32
+	err := yaml.Unmarshal(data, &intPort)
+	if err != nil {
+		return net.Port(0), err
+	}
+	return net.PortFromInt(intPort)
+}
+
 func parseStringPort(s string) (net.Port, net.Port, error) {
 	if strings.HasPrefix(s, "env:") {
 		s = s[4:]
@@ -150,6 +160,15 @@ func parseJSONStringPort(data []byte) (net.Port, net.Port, error) {
 	return parseStringPort(s)
 }
 
+func parseYAMLStringPort(data []byte) (net.Port, net.Port, error) {
+	var s string
+	err := yaml.Unmarshal(data, &s)
+	if err != nil {
+		return net.Port(0), net.Port(0), err
+	}
+	return parseStringPort(s)
+}
+
 type PortRange struct {
 	From uint32
 	To   uint32
@@ -172,6 +191,28 @@ func (v *PortRange) UnmarshalJSON(data []byte) error {
 	}
 
 	from, to, err := parseJSONStringPort(data)
+	if err == nil {
+		v.From = uint32(from)
+		v.To = uint32(to)
+		if v.From > v.To {
+			return newError("invalid port range ", v.From, " -> ", v.To)
+		}
+		return nil
+	}
+
+	return newError("invalid port range: ", string(data))
+}
+
+// UnmarshalYAML implements yaml.v2/yaml.Unmarshaler.UnmarshalYAML
+func (v *PortRange) UnmarshalYAML(data []byte) error {
+	port, err := parseYAMLIntPort(data)
+	if err == nil {
+		v.From = uint32(port)
+		v.To = uint32(port)
+		return nil
+	}
+
+	from, to, err := parseYAMLStringPort(data)
 	if err == nil {
 		v.From = uint32(from)
 		v.To = uint32(to)
@@ -230,9 +271,43 @@ func (list *PortList) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// UnmarshalYAML implements yaml.v2/yaml.Unmarshaler.UnmarshalYAML
+func (list *PortList) UnmarshalYAML(data []byte) error {
+	var listStr string
+	var number uint32
+	if err := yaml.Unmarshal(data, &listStr); err != nil {
+		if err2 := yaml.Unmarshal(data, &number); err2 != nil {
+			return newError("invalid port: ", string(data)).Base(err2)
+		}
+	}
+	rangelist := strings.Split(listStr, ",")
+	for _, rangeStr := range rangelist {
+		trimmed := strings.TrimSpace(rangeStr)
+		if len(trimmed) > 0 {
+			if strings.Contains(trimmed, "-") {
+				from, to, err := parseStringPort(trimmed)
+				if err != nil {
+					return newError("invalid port range: ", trimmed).Base(err)
+				}
+				list.Range = append(list.Range, PortRange{From: uint32(from), To: uint32(to)})
+			} else {
+				port, err := parseIntPort([]byte(trimmed))
+				if err != nil {
+					return newError("invalid port: ", trimmed).Base(err)
+				}
+				list.Range = append(list.Range, PortRange{From: uint32(port), To: uint32(port)})
+			}
+		}
+	}
+	if number != 0 {
+		list.Range = append(list.Range, PortRange{From: number, To: number})
+	}
+	return nil
+}
+
 type User struct {
-	EmailString string `json:"email"`
-	LevelByte   byte   `json:"level"`
+	EmailString string `json:"email" yaml:"email"`
+	LevelByte   byte   `json:"level" yaml:"level"`
 }
 
 func (v *User) Build() *protocol.User {

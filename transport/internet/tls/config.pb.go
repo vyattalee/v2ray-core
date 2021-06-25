@@ -140,23 +140,23 @@ type Config struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Whether or not to allow self-signed certificates.
-	AllowInsecure bool `protobuf:"varint,1,opt,name=allow_insecure,json=allowInsecure,proto3" json:"allow_insecure,omitempty"`
+	AllowInsecure bool `protobuf:"varint,1,opt,name=allow_insecure,json=allowInsecure,proto3" json:"allow_insecure,omitempty" yaml:"allow_insecure"`
 	// List of certificates to be served on server.
-	Certificate []*Certificate `protobuf:"bytes,2,rep,name=certificate,proto3" json:"certificate,omitempty"`
+	Certificate []*Certificate `protobuf:"bytes,2,rep,name=certificate,proto3" json:"certificate,omitempty" yaml:"certificate"`
 	// Override server name.
-	ServerName string `protobuf:"bytes,3,opt,name=server_name,json=serverName,proto3" json:"server_name,omitempty"`
+	ServerName string `protobuf:"bytes,3,opt,name=server_name,json=serverName,proto3" json:"server_name,omitempty" yaml:"server_name"`
 	// Lists of string as ALPN values.
-	NextProtocol []string `protobuf:"bytes,4,rep,name=next_protocol,json=nextProtocol,proto3" json:"next_protocol,omitempty"`
+	NextProtocol []string `protobuf:"bytes,4,rep,name=next_protocol,json=nextProtocol,proto3" json:"next_protocol,omitempty" yaml:"next_protocol"`
 	// Whether or not to enable session (ticket) resumption.
-	EnableSessionResumption bool `protobuf:"varint,5,opt,name=enable_session_resumption,json=enableSessionResumption,proto3" json:"enable_session_resumption,omitempty"`
+	EnableSessionResumption bool `protobuf:"varint,5,opt,name=enable_session_resumption,json=enableSessionResumption,proto3" json:"enable_session_resumption,omitempty" yaml:"enable_session_resumption"`
 	// If true, root certificates on the system will not be loaded for
 	// verification.
-	DisableSystemRoot bool `protobuf:"varint,6,opt,name=disable_system_root,json=disableSystemRoot,proto3" json:"disable_system_root,omitempty"`
+	DisableSystemRoot bool `protobuf:"varint,6,opt,name=disable_system_root,json=disableSystemRoot,proto3" json:"disable_system_root,omitempty" yaml:"disable_system_root"`
 	// @Document A pinned certificate chain sha256 hash.
 	//@Document If the server's hash does not match this value, the connection will be aborted.
 	//@Document This value replace allow_insecure.
 	//@Critical
-	PinnedPeerCertificateChainSha256 [][]byte `protobuf:"bytes,7,rep,name=pinned_peer_certificate_chain_sha256,json=pinnedPeerCertificateChainSha256,proto3" json:"pinned_peer_certificate_chain_sha256,omitempty"`
+	PinnedPeerCertificateChainSha256 [][]byte `protobuf:"bytes,7,rep,name=pinned_peer_certificate_chain_sha256,json=pinnedPeerCertificateChainSha256,proto3" json:"pinned_peer_certificate_chain_sha256,omitempty" yaml:"pinned_peer_certificate_chain_sha256"`
 }
 
 func (x *Config) Reset() {
