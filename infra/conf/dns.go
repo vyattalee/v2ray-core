@@ -3,6 +3,7 @@ package conf
 import (
 	"context"
 	"encoding/json"
+	"gopkg.in/yaml.v2"
 	"sort"
 	"strings"
 
@@ -42,6 +43,41 @@ func (c *NameServerConfig) UnmarshalJSON(data []byte) error {
 		ExpectIPs    cfgcommon.StringList `json:"expectIps" yaml:"expectIps"`
 	}
 	if err := json.Unmarshal(data, &advanced); err == nil {
+		c.Address = advanced.Address
+		c.ClientIP = advanced.ClientIP
+		c.Port = advanced.Port
+		c.SkipFallback = advanced.SkipFallback
+		c.Domains = advanced.Domains
+		c.ExpectIPs = advanced.ExpectIPs
+		return nil
+	}
+
+	return newError("failed to parse name server: ", string(data))
+}
+
+func (c *NameServerConfig) UnmarshalYAML(unmarshal func(interface{}) error) error {
+
+	var Addr string
+
+	if err := unmarshal(&Addr); err != nil {
+		return err
+	}
+
+	address := net.ParseAddress(Addr)
+
+	c.Address.Address = address
+
+	data := []byte(Addr)
+
+	var advanced struct {
+		Address      *cfgcommon.Address   `json:"address" yaml:"address"`
+		ClientIP     *cfgcommon.Address   `json:"clientIp" yaml:"clientIp"`
+		Port         uint16               `json:"port" yaml:"port"`
+		SkipFallback bool                 `json:"skipFallback" yaml:"skipFallback"`
+		Domains      []string             `json:"domains" yaml:"domains"`
+		ExpectIPs    cfgcommon.StringList `json:"expectIps" yaml:"expectIps"`
+	}
+	if err := yaml.Unmarshal(data, &advanced); err == nil {
 		c.Address = advanced.Address
 		c.ClientIP = advanced.ClientIP
 		c.Port = advanced.Port

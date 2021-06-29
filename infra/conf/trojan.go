@@ -26,7 +26,7 @@ type TrojanServerTarget struct {
 
 // TrojanClientConfig is configuration of trojan servers
 type TrojanClientConfig struct {
-	Servers []*TrojanServerTarget `json:"servers"`
+	Servers []*TrojanServerTarget `json:"servers" yaml:"servers"`
 }
 
 // Build implements Buildable

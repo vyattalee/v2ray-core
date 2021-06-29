@@ -48,13 +48,13 @@ func (c *HTTPServerConfig) Build() (proto.Message, error) {
 }
 
 type HTTPRemoteConfig struct {
-	Address *cfgcommon.Address `json:"address"`
-	Port    uint16             `json:"port"`
-	Users   []json.RawMessage  `json:"users"`
+	Address *cfgcommon.Address `json:"address" yaml:"address"`
+	Port    uint16             `json:"port" yaml:"port"`
+	Users   []json.RawMessage  `json:"users" yaml:"users"`
 }
 
 type HTTPClientConfig struct {
-	Servers []*HTTPRemoteConfig `json:"servers"`
+	Servers []*HTTPRemoteConfig `json:"servers" yaml:"servers"`
 }
 
 func (v *HTTPClientConfig) Build() (proto.Message, error) {

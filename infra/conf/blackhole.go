@@ -22,7 +22,7 @@ func (*HTTPResponse) Build() (proto.Message, error) {
 }
 
 type BlackholeConfig struct {
-	Response json.RawMessage `json:"response"`
+	Response json.RawMessage `json:"response" yaml:"response"`
 }
 
 func (v *BlackholeConfig) Build() (proto.Message, error) {

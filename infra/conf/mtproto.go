@@ -30,7 +30,7 @@ func (a *MTProtoAccount) Build() (*mtproto.Account, error) {
 }
 
 type MTProtoServerConfig struct {
-	Users []json.RawMessage `json:"users"`
+	Users []json.RawMessage `json:"users" yaml:"users"`
 }
 
 func (c *MTProtoServerConfig) Build() (proto.Message, error) {

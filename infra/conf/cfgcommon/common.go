@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"gopkg.in/yaml.v2"
 	"os"
+	"strconv"
 	"strings"
 
 	"github.com/v2fly/v2ray-core/v4/common/net"
@@ -53,13 +54,14 @@ func (v *Address) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (v *Address) UnmarshalYAML(unmarshal func(data interface{}) error) error {
+func (v *Address) UnmarshalYAML(unmarshal func(interface{}) error) error {
 
-	type Addr Address
+	var Addr string
 
-	if err := unmarshal((*Addr)(v)); err != nil {
+	if err := unmarshal(&Addr); err != nil {
 		return err
 	}
+	v.Address = net.ParseAddress(Addr)
 
 	return nil
 
@@ -216,7 +218,17 @@ func (v *PortRange) UnmarshalJSON(data []byte) error {
 }
 
 // UnmarshalYAML implements yaml.v2/yaml.Unmarshaler.UnmarshalYAML
-func (v *PortRange) internalUnmarshalYAML(data []byte) error {
+//UnmarshalYAML(unmarshal func(interface{}) error) error
+func (v *PortRange) UnmarshalYAML(unmarshal func(interface{}) error) error {
+
+	var tgt int
+	if err := unmarshal(&tgt); err != nil {
+		//fmt.Println("Parent :", err)
+		return err
+	}
+
+	data := []byte(strconv.Itoa(tgt))
+
 	port, err := parseYAMLIntPort(data)
 	if err == nil {
 		v.From = uint32(port)
@@ -235,51 +247,10 @@ func (v *PortRange) internalUnmarshalYAML(data []byte) error {
 	}
 
 	return newError("invalid port range: ", string(data))
-}
 
-// UnmarshalYAML implements yaml.v2/yaml.Unmarshaler.UnmarshalYAML
-//UnmarshalYAML(unmarshal func(interface{}) error) error
-func (v *PortRange) UnmarshalYAML(unmarshal func(data interface{}) error) error {
-	//tgt := make(map[string]interface{})
-	//tgt := make([]byte,0)
-	type PR PortRange
-
-	if err := unmarshal((*PR)(v)); err != nil {
-		//fmt.Println("Parent :", err)
-		return err
-	}
-
-	//port, err := parseYAMLIntPort(data)
-	//if err == nil {
-	//	v.From = uint32(port)
-	//	v.To = uint32(port)
-	//	return nil
-	//}
-	//
-	//from, to, err := parseYAMLStringPort(data)
-	//if err == nil {
-	//	v.From = uint32(from)
-	//	v.To = uint32(to)
-	//	if v.From > v.To {
-	//		return newError("invalid port range ", v.From, " -> ", v.To)
-	//	}
-	//	return nil
-	//}
-	//
-	//return newError("invalid port range: ", string(data))
-
-	return nil
+	//return nil
 
 }
-
-//func (v *PortRange) UnmarshalYAML(internalUnmarshalYAMLfn func(data []byte) error) error{
-//	internalUnmarshalYAMLfn = v.internalUnmarshalYAML
-//	return v.internalUnmarshalYAML()
-//}
-//func (v *PortRange) UnmarshalYAML( in v.internalUnmarshalYAML ) error {
-//	err := unmarshal(data)
-//	return err
-//}
 
 type PortList struct {
 	Range []PortRange

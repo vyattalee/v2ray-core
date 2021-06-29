@@ -13,14 +13,14 @@ import (
 )
 
 type RouterRulesConfig struct {
-	RuleList       []json.RawMessage `json:"rules"`
-	DomainStrategy string            `json:"domainStrategy"`
+	RuleList       []json.RawMessage `json:"rules" yaml:"rules"`
+	DomainStrategy string            `json:"domainStrategy" yaml:"domainStrategy"`
 }
 
 // StrategyConfig represents a strategy config
 type StrategyConfig struct {
-	Type     string           `json:"type"`
-	Settings *json.RawMessage `json:"settings"`
+	Type     string           `json:"type" yaml:"type"`
+	Settings *json.RawMessage `json:"settings" yaml:"setting"`
 }
 
 type BalancingRule struct {
@@ -55,12 +55,12 @@ func (r *BalancingRule) Build() (*router.BalancingRule, error) {
 }
 
 type RouterConfig struct {
-	Settings       *RouterRulesConfig `json:"settings"` // Deprecated
-	RuleList       []json.RawMessage  `json:"rules"`
-	DomainStrategy *string            `json:"domainStrategy"`
-	Balancers      []*BalancingRule   `json:"balancers"`
+	Settings       *RouterRulesConfig `json:"settings" yaml:"settings"` // Deprecated
+	RuleList       []json.RawMessage  `json:"rules" yaml:"rules"`
+	DomainStrategy *string            `json:"domainStrategy" yaml:"domainStrategy"`
+	Balancers      []*BalancingRule   `json:"balancers" yaml:"balancers"`
 
-	DomainMatcher string `json:"domainMatcher"`
+	DomainMatcher string `json:"domainMatcher" yaml:"domainMatcher"`
 }
 
 func (c *RouterConfig) getDomainStrategy() router.Config_DomainStrategy {

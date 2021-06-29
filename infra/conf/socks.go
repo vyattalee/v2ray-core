@@ -12,8 +12,8 @@ import (
 )
 
 type SocksAccount struct {
-	Username string `json:"user"`
-	Password string `json:"pass"`
+	Username string `json:"user" yaml:"user"`
+	Password string `json:"pass" yaml:"pass"`
 }
 
 func (v *SocksAccount) Build() *socks.Account {
@@ -29,12 +29,12 @@ const (
 )
 
 type SocksServerConfig struct {
-	AuthMethod string             `json:"auth"`
-	Accounts   []*SocksAccount    `json:"accounts"`
-	UDP        bool               `json:"udp"`
-	Host       *cfgcommon.Address `json:"ip"`
-	Timeout    uint32             `json:"timeout"`
-	UserLevel  uint32             `json:"userLevel"`
+	AuthMethod string             `json:"auth" yaml:"auth"`
+	Accounts   []*SocksAccount    `json:"accounts" yaml:"accounts"`
+	UDP        bool               `json:"udp" yaml:"udp"`
+	Host       *cfgcommon.Address `json:"ip" yaml:"ip"`
+	Timeout    uint32             `json:"timeout" yaml:"timeout"`
+	UserLevel  uint32             `json:"userLevel" yaml:"userLevel"`
 }
 
 func (v *SocksServerConfig) Build() (proto.Message, error) {
@@ -67,13 +67,13 @@ func (v *SocksServerConfig) Build() (proto.Message, error) {
 }
 
 type SocksRemoteConfig struct {
-	Address *cfgcommon.Address `json:"address"`
-	Port    uint16             `json:"port"`
-	Users   []json.RawMessage  `json:"users"`
+	Address *cfgcommon.Address `json:"address" yaml:"address"`
+	Port    uint16             `json:"port" yaml:"port"`
+	Users   []json.RawMessage  `json:"users" yaml:"users"`
 }
 
 type SocksClientConfig struct {
-	Servers []*SocksRemoteConfig `json:"servers"`
+	Servers []*SocksRemoteConfig `json:"servers" yaml:"servers"`
 }
 
 func (v *SocksClientConfig) Build() (proto.Message, error) {

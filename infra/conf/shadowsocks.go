@@ -74,7 +74,7 @@ type ShadowsocksServerTarget struct {
 }
 
 type ShadowsocksClientConfig struct {
-	Servers []*ShadowsocksServerTarget `json:"servers"`
+	Servers []*ShadowsocksServerTarget `json:"servers" yaml:"servers"`
 }
 
 func (v *ShadowsocksClientConfig) Build() (proto.Message, error) {
