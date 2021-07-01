@@ -3,7 +3,7 @@ package conf
 import (
 	"context"
 	"encoding/json"
-	"gopkg.in/yaml.v2"
+
 	"sort"
 	"strings"
 
@@ -57,9 +57,46 @@ func (c *NameServerConfig) UnmarshalJSON(data []byte) error {
 
 func (c *NameServerConfig) UnmarshalYAML(unmarshal func(interface{}) error) error {
 
+	//type plain NameServerConfig
+	//if err := unmarshal((*plain)(c)); err != nil {
+	//	return err
+	//}
+	//
+	//// If a global block was open but empty the default global config is overwritten.
+	//// We have to restore it here.
+	//if c.Address == nil {
+	//	c.Address = &cfgcommon.Address{}
+	//
+	//}
+	//
+	//names := map[string]struct{}{}
+	//
+	//for _, rcv := range c.ExpectIPs {
+	//	if _, ok := names[rcv]; ok {
+	//		return fmt.Errorf("notification config name %q is not unique", rcv)
+	//	}
+	//	//for _, wh := range rcv.WebhookConfigs {
+	//	//	if wh.HTTPConfig == nil {
+	//	//		wh.HTTPConfig = c.Global.HTTPConfig
+	//	//	}
+	//	//}
+	//	//for _, ec := range rcv.EmailConfigs {
+	//	//	if ec.Smarthost.String() == "" {
+	//	//		if c.Global.SMTPSmarthost.String() == "" {
+	//	//			return fmt.Errorf("no global SMTP smarthost set")
+	//	//		}
+	//	//		ec.Smarthost = c.Global.SMTPSmarthost
+	//	//	}
+	//	//}
+	//}
+	//
+	//return nil
+
 	var Addr string
 
-	if err := unmarshal(&Addr); err != nil {
+	var conf NameServerConfig
+
+	if err := unmarshal(&conf); err != nil {
 		return err
 	}
 
@@ -69,23 +106,23 @@ func (c *NameServerConfig) UnmarshalYAML(unmarshal func(interface{}) error) erro
 
 	data := []byte(Addr)
 
-	var advanced struct {
-		Address      *cfgcommon.Address   `json:"address" yaml:"address"`
-		ClientIP     *cfgcommon.Address   `json:"clientIp" yaml:"clientIp"`
-		Port         uint16               `json:"port" yaml:"port"`
-		SkipFallback bool                 `json:"skipFallback" yaml:"skipFallback"`
-		Domains      []string             `json:"domains" yaml:"domains"`
-		ExpectIPs    cfgcommon.StringList `json:"expectIps" yaml:"expectIps"`
-	}
-	if err := yaml.Unmarshal(data, &advanced); err == nil {
-		c.Address = advanced.Address
-		c.ClientIP = advanced.ClientIP
-		c.Port = advanced.Port
-		c.SkipFallback = advanced.SkipFallback
-		c.Domains = advanced.Domains
-		c.ExpectIPs = advanced.ExpectIPs
-		return nil
-	}
+	//var advanced struct {
+	//	Address      *cfgcommon.Address   `json:"address" yaml:"address"`
+	//	ClientIP     *cfgcommon.Address   `json:"clientIp" yaml:"clientIp"`
+	//	Port         uint16               `json:"port" yaml:"port"`
+	//	SkipFallback bool                 `json:"skipFallback" yaml:"skipFallback"`
+	//	Domains      []string             `json:"domains" yaml:"domains"`
+	//	ExpectIPs    cfgcommon.StringList `json:"expectIps" yaml:"expectIps"`
+	//}
+	//if err := yaml.Unmarshal(data, &advanced); err == nil {
+	//	c.Address = advanced.Address
+	//	c.ClientIP = advanced.ClientIP
+	//	c.Port = advanced.Port
+	//	c.SkipFallback = advanced.SkipFallback
+	//	c.Domains = advanced.Domains
+	//	c.ExpectIPs = advanced.ExpectIPs
+	//	return nil
+	//}
 
 	return newError("failed to parse name server: ", string(data))
 }
@@ -169,7 +206,7 @@ var typeMap = map[router.Domain_Type]dns.DomainMatchingType{
 
 // DNSConfig is a JSON serializable object for dns.Config.
 type DNSConfig struct {
-	Servers         []*NameServerConfig     `json:"servers" yaml:"servers"`
+	Servers         []*NameServerConfig     `json:"servers" yaml:"array.servers,flow"`
 	Hosts           map[string]*HostAddress `json:"hosts" yaml:"hosts"`
 	ClientIP        *cfgcommon.Address      `json:"clientIp" yaml:"clientIp"`
 	Tag             string                  `json:"tag" yaml:"tag"`
